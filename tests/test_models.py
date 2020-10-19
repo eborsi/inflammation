@@ -1,8 +1,41 @@
 """Tests for statistics functions within the Model layer."""
-
+import pytest
 import numpy as np
 import numpy.testing as npt
 from unittest.mock import patch
+
+@pytest.mark.parametrize(
+    "test, expected",
+    [
+     ([[0, 0], [0, 0], [0, 0]], [0, 0]),
+     ([[5, 2], [3, 4], [1, 6]], [1, 2])
+    ])
+def test_daily_min(test, expected):
+    from inflammation.models import daily_min
+
+    test_array = np.array([[1, 1], [0, 1], [1, 0]])  # yapf: disable
+
+    npt.assert_array_equal(np.array(expected), daily_min(np.array(test)))
+
+
+
+@pytest.mark.parametrize(
+    "test, expected",
+    [
+     ([[0, 0], [0, 0], [0, 0]], [0, 0]),
+     ([[1, 2], [5, 4], [4, 6]], [5, 6])
+    ])
+def test_daily_max(test,expected):
+    """Test that max function works for an array of positive integers."""
+    from inflammation.models import daily_max
+
+    test_array = np.array([[4, 2, 5],
+                           [1, 6, 2],
+                           [4, 1, 9]])  # yapf: disable
+
+    # Need to use Numpy testing functions to compare arrays
+    npt.assert_array_equal(np.array(expected), daily_max(np.array(test)))
+    
 
 def test_daily_mean_zeros():
     """Test that mean function works for an array of zeros."""
